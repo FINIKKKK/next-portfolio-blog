@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+@@include('./blocks/main/_head.html', {
+"title": "Регистрация",
+})
+
+<body class="mini">
+
+    <!-- register
+    ======================================================= -->
+    <section class="register">
+        <div class="inner">
+            <form class="form">
+                <h2 class="title">Регистрация</h2>
+                <p class="text">Пожалуйста, заполните данные, чтобы зарегистрироваться</p>
+                <div class="inputs">
+                    <div class="input error">
+                        <input type="text" placeholder="Имя:">
+                        <svg width="20" height="20">
+                            <use xlink:href="./img/icons/icons.svg#close"/>
+                        </svg>
+                    </div>
+                    <div class="input">
+                        <input type="text" placeholder="Email:">
+                    </div>
+                    <div class="input">
+                        <input type="text" placeholder="Пароль:">
+                    </div>
+                </div>
+                <button class="btn">Регистрация</button>
+                <div class="link">
+                    Уже есть аккаунт? <a href="login.html">Войдите</a>
+                </div>
+            </form>
+            <div class="img">
+                <img src="./img/register__img.jpg" alt="">
+            </div>
+        </div>
+    </section>
+    <!-- register end -->
+
+</body>
+
+</html>

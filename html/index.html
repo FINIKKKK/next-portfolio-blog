@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+@@include('./blocks/main/_head.html', {
+"title": "Главная",
+})
+
+<body>
+
+    @@include('./blocks/main/_header.html')
+
+    <main class="main">
+        <div class="container">
+            <div class="main__inner">
+                <div class="inner">
+                    <!-- <h3 class="inner__title">Поиск по "nkfekf"</h3> -->
+                    <!-- <h3 class="inner__title">Категория "Дизайн"</h3> -->
+
+                    <!-- @@include('./blocks/notFound.html') -->
+                    
+                    <div class="posts">
+                        @@include('./blocks/post.html')
+                        @@include('./blocks/post.html')
+                        @@include('./blocks/post.html')
+                    </div>
+
+                    @@include('./blocks/pagination.html')
+                </div>
+
+                @@include('./blocks/sidebar.html')
+            </div>
+        </div>
+    </main>
+
+    @@include('./blocks/notices.html')
+
+
+    @@include('./blocks/main/_footer.html')
+
+    <!-- Scripts -->
+    @@include('./blocks/main/_js.html')
+
+</body>
+
+</html>

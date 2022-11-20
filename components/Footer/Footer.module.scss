@@ -1,0 +1,45 @@
+@import '../../styles/assets/variables';
+
+// --------- footer ----------
+.footer {
+  background-color: $white;
+  padding: 11px 0;
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .copy {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 700;
+  }
+}
+
+// --------- soclist ----------
+.soclist {
+  display: flex;
+  align-items: center;
+  .soclist__item {
+    &:not(:last-child) {
+      margin-right: 11px;
+    }
+    &:hover {
+      background-color: #000;
+    }
+    transition: 0.2s;
+    background-color: $main;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg {
+      margin-top: 7px;
+      fill: #fff;
+      width: 15px;
+      height: 12px;
+    }
+  }
+}

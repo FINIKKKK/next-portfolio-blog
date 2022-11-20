@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+@@include('./blocks/main/_head.html', {
+"title": "Главная",
+})
+
+<body>
+
+    @@include('./blocks/main/_header.html')
+
+    <main class="main">
+        <div class="container">
+            <div class="main__inner">
+                <div class="inner">
+
+                    <div class="createPost">
+                        <div class="category block">
+                            <p>Категория</p>
+                            <svg class='' width="20" height="20">
+                                <use xlink:href="./img/icons/icons.svg#triangle" />
+                            </svg>
+                        </div>
+                        <div class="img block">
+                            <svg class='' width="20" height="20">
+                                <use xlink:href="./img/icons/icons.svg#edit" />
+                            </svg>
+                        </div>
+                        
+                        <div class="title block">
+                            <input type="text" placeholder="Заголовок">
+                        </div>
+                        <div class="content block">
+                            <input type="text" placeholder="text">
+                        </div>
+                        <div class="createTags block">
+                            <!-- <div class="title">Метки</div> -->
+                            <input type="text" placeholder="Метки">
+                            <div class="list">
+                                <div class="item">
+                                    <p>Bedroom furniture</p>
+                                    <svg width="20" height="20">
+                                        <use xlink:href="./img/icons/icons.svg#close" />
+                                    </svg>
+                                </div>
+                                <div class="item">
+                                    <p>Bedroom furniture</p>
+                                    <svg width="20" height="20">
+                                        <use xlink:href="./img/icons/icons.svg#close" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn">Опубликовать</button>
+                    </div>
+
+
+
+
+
+
+
+                </div>
+
+                @@include('./blocks/sidebar.html')
+            </div>
+        </div>
+    </main>
+
+    @@include('./blocks/main/_footer.html')
+
+    <!-- Scripts -->
+    @@include('./blocks/main/_js.html')
+
+</body>
+
+</html>

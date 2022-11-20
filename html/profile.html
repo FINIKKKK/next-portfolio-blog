@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+@@include('./blocks/main/_head.html', {
+"title": "Главная",
+})
+
+<body>
+
+    @@include('./blocks/main/_header.html')
+
+    <div class="profile">
+        <div class="container">
+            <div class="inner">
+                <div class="left">
+                    <a href="#" class="editAvatar">
+                        <img src="./img/avatar.png" alt="avatar" class="avatar">
+                        <div class="content">
+                            <svg width="20" height="20">
+                                <use xlink:href="./img/icons/icons.svg#edit" />
+                            </svg>
+                        </div>
+                    </a>
+                    <p class="label">1500 Подписчиков</p>
+                    <button class="btn">Подписаться</button>
+                </div>
+                <div class="right">
+                    <h3 class=" name">Dmitriy Bozhko</h3>
+                    <p class="description">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+                    <svg class='edit' width="20" height="20">
+                        <use xlink:href="./img/icons/icons.svg#edit" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="userPosts">
+        <div class="container">
+            <div class="inner">
+                <div class="header">
+                    <h4 class="title">Посты</h4>
+                    <div class="search input active">
+                        <input type="text" placeholder="Поиск">
+                        <svg width="20" height="20">
+                            <use xlink:href="./img/icons/icons.svg#search" />
+                        </svg>
+                    </div>
+                </div>
+
+
+                <div class="list">
+                    <div class="item">
+                        <div class="img">
+                            <img src="./img/post__img.jpg" alt="">
+                            <div class="content">
+                                <a href="#">
+                                    <svg width="20" height="20">
+                                        <use xlink:href="./img/icons/icons.svg#edit" />
+                                    </svg>
+                                </a>
+                                <a>
+                                    <svg width="20" height="20">
+                                        <use xlink:href="./img/icons/icons.svg#remove" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        <a href="#" class="item__title">Cred selfies edison bulb four dollar toast humblebrag</a>
+                        <div class="date">August 10, 2020</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    @@include('./blocks/main/_footer.html')
+
+    <!-- Scripts -->
+    @@include('./blocks/main/_js.html')
+
+</body>
+
+</html>

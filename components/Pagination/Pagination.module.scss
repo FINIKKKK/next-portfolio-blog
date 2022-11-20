@@ -1,0 +1,57 @@
+@import '../../styles/assets/variables';
+
+// --------- pagination ----------
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 70px;
+  .list,
+  .skip {
+    display: flex;
+    align-items: center;
+  }
+  .item {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 23px;
+    color: $gray;
+    &:hover {
+      color: #000;
+      svg {
+        fill: #000;
+      }
+    }
+    svg {
+      transition: 0.2s;
+      fill: $main;
+      width: 10px;
+      height: 15px;
+    }
+    &:not(:last-child) {
+      margin-right: 25px;
+    }
+    &.disabled {
+      pointer-events: none;
+    }
+    &.active {
+      color: #fff;
+      border-radius: 50%;
+      background-color: $main;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+  }
+  .input {
+    max-width: 55px;
+    margin-right: 15px;
+    input {
+      text-align: center;
+      padding: 5px;
+    }
+  }
+}

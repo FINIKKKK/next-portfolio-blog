@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+@@include('./blocks/main/_head.html', {
+"title": "Главная",
+})
+
+<body>
+
+    @@include('./blocks/main/_header.html')
+
+    <div class="edit">
+        <div class="container">
+            <div class="inner">
+                <ul class="nav">
+                    <li class="item active">Профиль</li>
+                    <li class="item">Аккаунт</li>
+                </ul>
+
+                <!-- <div class="editProfile">
+                    <div class="editAvatar">
+                        <img src="./img/avatar.png" alt="avatar" class="avatar">
+                        <div class="content">
+                            <svg width="20" height="20">
+                                <use xlink:href="./img/icons/icons.svg#edit" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="editContent">
+                        <div class="input">
+                            <label>Имя</label>
+                            <input type="text" value="Dmitriy Bozhko">
+                        </div>
+                        <div class="input">
+                            <label>Информация</label>
+                            <textarea>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged</textarea>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="editAccount">
+                    <div class="inputBlock">
+                        <div class="input">
+                            <label>Имя</label>
+                            <input type="text" value="Dmitriy Bozhko">
+                            <svg width="20" height="20">
+                                <use xlink:href="./img/icons/icons.svg#close"/>
+                            </svg>
+                        </div>
+                        <button class="btn">Сохранить</button>
+                    </div>
+                    <div class="inputBlock">
+                        <div class="inputs">
+                            <div class="input">
+                                <label>Пароль</label>
+                                <input type="text" value="Dmitriy Bozhko">
+                                <svg width="20" height="20">
+                                    <use xlink:href="./img/icons/icons.svg#eye"/>
+                                </svg>
+                            </div>
+                            <div class="input">
+                                <label>Подтвердите пароль</label>
+                                <input type="text" value="Dmitriy Bozhko">
+                            </div>
+                        </div>
+                        <button class="btn">Обновить пароль</button>
+                    </div>
+                    <div class="delete">
+                        <div class="label">Аккаунт</div>
+                        <button class="btn">Удалить аккаунт</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @@include('./blocks/main/_footer.html')
+
+    <!-- Scripts -->
+    @@include('./blocks/main/_js.html')
+
+</body>
+
+</html>
