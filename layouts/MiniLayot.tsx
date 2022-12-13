@@ -1,9 +1,9 @@
 import React from "react";
 
-type MinilayoutsProps = {
+type MiniLayoutsProps = {
   children: any;
 };
 
-export const MiniLayout: React.FC<MinilayoutsProps> = ({ children }) => {
+export const MiniLayout: React.FC<MiniLayoutsProps> = ({ children }) => {
   return <div className="mini">{children}</div>;
 };

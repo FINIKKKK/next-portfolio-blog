@@ -4,36 +4,39 @@ import { setCookie } from "nookies";
 import React from "react";
 import { FormProvider, useForm, useFormState } from "react-hook-form";
 import { FormInput } from "../components";
-import { MiniLayout } from "../layouts/MiniLayot";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { RegisterFormScheme } from "../utils/validation";
+import { LoginFormScheme, RegisterFormScheme } from "../utils/validation";
 import { Api } from "../utils/api";
-import { UserRegisterDto } from "../utils/api/types";
+import { UserLoginDto, UserRegisterDto } from "../utils/api/types";
 import { useRouter } from "next/router";
 import { AuthLayout } from "../layouts/AuthLayout";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../redux/user/slice";
 
-interface RegisterPageProps {}
+interface LoginPageProps {}
 
-const RegisterPage: NextPage<RegisterPageProps> = () => {
-  const router = useRouter();
+const LoginPage: NextPage<LoginPageProps> = () => {
   const [errorMessage, setErrorMessage] = React.useState("");
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const form = useForm({
     mode: "onChange",
-    resolver: yupResolver(RegisterFormScheme),
+    resolver: yupResolver(LoginFormScheme),
   });
 
-  const onSubmitForm = async (dto: UserRegisterDto) => {
+  const onSubmitForm = async (dto: UserLoginDto) => {
     try {
-      const user = await Api().user.register(dto);
+      const user = await Api().user.login(dto);
       setCookie(null, "token", user.token, {
         maxAge: 30 * 60 * 24 * 60,
         path: "/",
       });
+      dispatch(setUserData(user));
       setErrorMessage("");
       router.push("/");
     } catch (err) {
-      setErrorMessage("Ошибка при регистрации");
+      setErrorMessage("Ошибка при авторизации");
     }
   };
 
@@ -41,19 +44,21 @@ const RegisterPage: NextPage<RegisterPageProps> = () => {
     <AuthLayout>
       <FormProvider {...form}>
         <form onSubmit={form.handleSubmit(onSubmitForm)} className="form">
-          <h2 className="title">Регистрация</h2>
+          <h2 className="title">Вход</h2>
           <p className="text">
-            Пожалуйста, заполните данные, чтобы зарегистрироваться
+            Пожалуйста, заполните данные, чтобы войти в аккаунт
           </p>
           {errorMessage && <div className="errorMessage">{errorMessage}</div>}
           <div className="inputs">
-            <FormInput name="name" label="Имя:" />
             <FormInput name="email" label="Email:" />
             <FormInput name="password" label="Пароль:" />
           </div>
-          <button className="btn">Регистрация</button>
+          <Link href="/forgot" className="forgot">
+            Забыли пароль?
+          </Link>
+          <button className="btn">Вход</button>
           <div className="link">
-            Уже есть аккаунт? <Link href="/login">Войдите</Link>
+            Еще нет аккаунта? <Link href="/register">Зарегистрируйтесь</Link>
           </div>
         </form>
       </FormProvider>
@@ -61,4 +66,4 @@ const RegisterPage: NextPage<RegisterPageProps> = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;

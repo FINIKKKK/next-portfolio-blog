@@ -28,9 +28,6 @@
   }
 }
 
-
-
-
 // --------- post ----------
 .post {
   .img {
@@ -190,11 +187,12 @@
 // --------- register ----------
 .register {
   width: 80%;
-  min-height: 600px;
+  height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
   .inner {
+    height: 100%;
     display: flex;
     background: #ffffff;
     box-shadow: 4px 4px 24px rgba(0, 0, 0, 0.25);
@@ -225,25 +223,65 @@
     font-weight: 700;
     font-size: 14px;
     color: $gray;
-    margin-bottom: 25px;
+  }
+  .errorMessage {
+    font-size: 12px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(#000, 0.2);
+    padding: 5px 12px;
+    border-radius: 5px;
+    background-color: rgb(183, 56, 56);
+    color:  #fff;
+    margin-top: 10px;
   }
   .inputs {
+    margin-top: 25px;
     margin-bottom: 30px;
     width: 100%;
   }
   .input {
     width: 100%;
+    &.password {
+      input {
+        padding-right: 65px;
+        &::-ms-reveal {
+          display: none !important;
+        }
+      }
+    }
     input {
       padding: 10px 10px;
       font-size: 14px;
       border-width: 2px;
       border-color: rgba(#000, 0.2);
+      padding-right: 35px;
       &::placeholder {
         color: rgba(#000, 0.4);
       }
     }
     &:not(:last-child) {
       margin-bottom: 15px;
+    }
+    .icons {
+      position: absolute;
+      top: 11px;
+      right: 12px;
+      display: flex;
+      align-items: center;
+      svg:not(:last-child) {
+        margin-right: 5px;
+      }
+    }
+    svg {
+      transform: none;
+      right: auto;
+      top: auto;
+      position: static;
+    }
+    .error {
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 12px;
     }
   }
   .forgot {
@@ -1054,7 +1092,7 @@
       margin-right: 25px;
       .input {
         &:not(:last-child) {
-         margin-bottom: 15px; 
+          margin-bottom: 15px;
         }
       }
     }
@@ -1077,9 +1115,9 @@
       margin-bottom: 5px;
     }
     .btn {
-      background-color: #AD3737;
+      background-color: #ad3737;
       &:hover {
-        background-color: darken(#AD3737, 10%);
+        background-color: darken(#ad3737, 10%);
       }
     }
   }

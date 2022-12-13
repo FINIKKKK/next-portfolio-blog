@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^2.9.10",
     "@material-ui/core": "^4.12.4",
     "@reduxjs/toolkit": "^1.9.1",

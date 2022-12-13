@@ -1,11 +1,11 @@
 import React from "react";
 import { Footer, Header } from "../components";
 
-type MainlayoutsProps = {
+type MainLayoutsProps = {
   children: any;
 };
 
-export const MainLayout: React.FC<MainlayoutsProps> = ({ children }) => {
+export const MainLayout: React.FC<MainLayoutsProps> = ({ children }) => {
   return (
     <>
       <Header />

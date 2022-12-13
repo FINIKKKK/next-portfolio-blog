@@ -3,7 +3,7 @@ import { GetServerSidePropsContext, NextPageContext } from "next";
 import Cookies, { parseCookies } from "nookies";
 import { UserApi } from "./user";
 
-export type ApiReturnType = {
+export type ApiReturnTypes = {
   user: ReturnType<typeof UserApi>;
 };
 
@@ -12,7 +12,7 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
   const token = cookies.token;
 
   const instance = axios.create({
-    baseURL: "http://localhost:7777",
+    baseURL: "http://localhost:7777/",
     headers: {
       Authorization: `Bearer ${token}`,
     },

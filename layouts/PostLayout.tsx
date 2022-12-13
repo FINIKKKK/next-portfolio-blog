@@ -1,11 +1,11 @@
 import React from "react";
 import { Footer, Header, Sidebar } from "../components";
 
-type PostlayoutsProps = {
+type PostLayoutsProps = {
   children: any;
 };
 
-export const PostLayout: React.FC<PostlayoutsProps> = ({ children }) => {
+export const PostLayout: React.FC<PostLayoutsProps> = ({ children }) => {
   return (
     <>
       <Header />

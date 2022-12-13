@@ -1,5 +1,10 @@
-export type UserDto = {
+export type UserRegisterDto = {
   name: string;
+  email: string;
+  password: string;
+};
+
+export type UserLoginDto = {
   email: string;
   password: string;
 };
@@ -10,6 +15,6 @@ export type TUser = {
   email: string;
   password: string;
   createdAt: string;
-  updatedAt: string;
+  updateAt: string;
   token: string;
 };
