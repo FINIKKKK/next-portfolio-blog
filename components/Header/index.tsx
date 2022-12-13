@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 import logo from '../../public/static/img/logo.svg';
@@ -16,12 +17,12 @@ export const Header: React.FC<HeaderProps> = () => {
             <Image src={logo} alt="logo" />
           </a>
           <div className="btns">
-            <a href="#" className="btn">
+            <Link href="/register" className="btn">
               Войти
-            </a>
-            <a href="#" className="btn btn2">
+            </Link>
+            <Link href="/register" className="btn btn2">
               Регистрация
-            </a>
+            </Link>
           </div>
           {/* <div className="toProfile">
             <img src="./img/avatar.png" alt="avatar" />
