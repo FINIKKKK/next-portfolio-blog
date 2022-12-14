@@ -16,5 +16,5 @@ export type TUser = {
   password: string;
   createdAt: string;
   updateAt: string;
-  token: string;
+  token?: string;
 };

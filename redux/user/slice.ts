@@ -1,21 +1,28 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TUser } from '../../utils/api/types';
-import { TUserDataSlice } from './types';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { HYDRATE } from "next-redux-wrapper";
+import { TUser } from "../../utils/api/types";
+import { TUserSlice } from "./types";
 
-const initialState: TUserDataSlice = {
+const initialState: TUserSlice = {
   data: null,
 };
 
-const userDataSlice = createSlice({
-  name: 'user',
+const userSlice = createSlice({
+  name: "user",
   initialState,
   reducers: {
-    setUserData(state, { payload }: PayloadAction<TUser>) {
+    setUser(state, { payload }: PayloadAction<TUser>) {
+      state.data = payload;
+    },
+  },
+  extraReducers: {
+    [HYDRATE]: (state, { payload }) => {
       state.data = payload;
     },
   },
 });
 
-export const { setUserData } = userDataSlice.actions;
+export const userActions = userSlice.actions;
+export const { setUser } = userSlice.actions;
 
-export default userDataSlice.reducer;
+export default userSlice.reducer;

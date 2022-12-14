@@ -1,5 +1,5 @@
 import { TUser } from "../../utils/api/types";
 
-export interface TUserDataSlice {
+export interface TUserSlice {
   data: TUser | null;
 };

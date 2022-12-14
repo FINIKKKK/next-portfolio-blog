@@ -16,4 +16,8 @@ export const UserApi = (instance: AxiosInstance) => ({
     );
     return data;
   },
+  async getProfile() {
+    const { data } = await instance.get<TUser>("/users/profile");
+    return data;
+  },
 });

@@ -1,10 +1,15 @@
-import "../styles/app.scss";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
-import { store } from "../redux/store";
+import { wrapper } from "../redux/store";
 import Head from "next/head";
+import { setUser } from "../redux/user/slice";
+import { Api } from "../utils/api";
 
-export default function App({ Component, pageProps }: AppProps) {
+import "../styles/app.scss";
+
+const App = ({ Component, ...rest }: AppProps) => {
+  const { store, props } = wrapper.useWrappedStore(rest);
+
   return (
     <>
       <Head>
@@ -14,8 +19,28 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
 
       <Provider store={store}>
-        <Component {...pageProps} />
+        <Component {...props.pageProps} />
       </Provider>
     </>
   );
-}
+};
+
+App.getInitialProps = wrapper.getInitialAppProps(
+  (store) =>
+    async ({ ctx, Component }) => {
+      try {
+        const userData = await Api(ctx).user.getProfile();
+        store.dispatch(setUser(userData));
+      } catch (err) {
+        console.log(err);
+      }
+
+      return {
+        pageProps: Component.getInitialProps
+          ? await Component.getInitialProps({ ...ctx, store })
+          : {},
+      };
+    }
+);
+
+export default App;

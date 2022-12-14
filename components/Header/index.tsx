@@ -3,16 +3,16 @@ import Link from "next/link";
 import React from "react";
 import { useSelector } from "react-redux";
 import avatar from "../../assets/img/avatar.png";
+import { useSelectors } from "../../hooks/useSelectors";
 
 import logo from "../../public/static/img/logo.svg";
-import { userSliceSelector } from "../../redux/user/selectors";
 
 import ss from "./Header.module.scss";
 
 type HeaderProps = {};
 
 export const Header: React.FC<HeaderProps> = () => {
-  const { data: userData } = useSelector(userSliceSelector);
+  const { data: userData } = useSelectors((state) => state.user);
   const [activePopup, setActivePopup] = React.useState(false);
   const popupRef = React.useRef<HTMLDivElement>(null);
 
