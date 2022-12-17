@@ -14,9 +14,12 @@ const userSlice = createSlice({
     setUser(state, { payload }: PayloadAction<TUser>) {
       state.data = payload;
     },
+    removeUser(state) {
+      state.data = null;
+    },
   },
   extraReducers: {
-    [HYDRATE]: (state, { payload }) => {
+    [HYDRATE]: (state, { payload }: PayloadAction<TUser>) => {
       state.data = payload;
     },
   },

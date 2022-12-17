@@ -1,18 +1,47 @@
+import { GetStaticProps, NextPage } from "next";
 import { Pagination, Post, Sidebar } from "../components";
-
 import { PostLayout } from "../layouts/PostLayout";
+import { Api } from "../utils/api";
+import { TPost } from "../utils/api/types";
 
-const items = [{}, {}];
+interface HomePageProps {
+  posts: TPost[];
+}
 
-export default function Home() {
+const HomePage: NextPage<HomePageProps> = ({ posts }) => {
   return (
     <PostLayout>
       <div className="posts">
-        {/* {items.map((obj: any) => (
-          <Post key={obj.id} {...obj} />
-        ))} */}
+        {posts.map((obj: TPost) => (
+          <Post
+            key={obj.id}
+            id={obj.id}
+            title={obj.title}
+            description={obj.description}
+            date={obj.createdAt}
+          />
+        ))}
       </div>
       {/* <Pagination /> */}
     </PostLayout>
   );
-}
+};
+
+export const getServerSideProps = async () => {
+  try {
+    const posts = await Api().post.getAll();
+    return {
+      props: {
+        posts,
+      },
+    };
+  } catch (err) {
+    console.warn(err);
+    alert("Ошибка при получении постов");
+  }
+  return {
+    props: { posts: null },
+  };
+};
+
+export default HomePage;

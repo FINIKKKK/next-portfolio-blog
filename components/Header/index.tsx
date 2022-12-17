@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { destroyCookie } from "nookies";
 import React from "react";
 import { useSelector } from "react-redux";
 import avatar from "../../assets/img/avatar.png";
+import { useActions } from "../../hooks/useActions";
 import { useSelectors } from "../../hooks/useSelectors";
 
 import logo from "../../public/static/img/logo.svg";
@@ -15,6 +17,8 @@ export const Header: React.FC<HeaderProps> = () => {
   const { data: userData } = useSelectors((state) => state.user);
   const [activePopup, setActivePopup] = React.useState(false);
   const popupRef = React.useRef<HTMLDivElement>(null);
+  const notices = false;
+  const { removeUser } = useActions();
 
   const handleClickOutSide = (e: MouseEvent) => {
     const _event = e as MouseEvent & {
@@ -31,6 +35,11 @@ export const Header: React.FC<HeaderProps> = () => {
     };
   }, []);
 
+  const onLogout = () => {
+    removeUser();
+    destroyCookie(null, "token");
+  };
+
   return (
     <header className="header">
       <div className="container">
@@ -38,7 +47,7 @@ export const Header: React.FC<HeaderProps> = () => {
           <a href="index.html" className="logo">
             <Image src={logo} alt="logo" />
           </a>
-          {!userData && (
+          {!userData?.user?.data && (
             <div className="btns">
               <Link href="/login" className="btn">
                 Войти
@@ -48,25 +57,25 @@ export const Header: React.FC<HeaderProps> = () => {
               </Link>
             </div>
           )}
-          {userData && (
+          {userData?.user?.data && (
             <div
               ref={popupRef}
               onClick={() => setActivePopup(!activePopup)}
               className="toProfile"
             >
               <Image src={avatar} alt="avatar" />
-              <span className="number">99</span>
+              {notices && <span className="number">99</span>}
               {activePopup && (
                 <div className="popup active">
                   <a href="#" className="item">
                     Профиль
                   </a>
                   <a href="#" className="item">
-                    Уведомления <span>99</span>
+                    Уведомления {notices && <span>99</span>}
                   </a>
-                  <a href="#" className="item">
+                  <div onClick={onLogout} className="item">
                     Выйти
-                  </a>
+                  </div>
                 </div>
               )}
             </div>

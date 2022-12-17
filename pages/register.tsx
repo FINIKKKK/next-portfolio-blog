@@ -4,7 +4,6 @@ import { setCookie } from "nookies";
 import React from "react";
 import { FormProvider, useForm, useFormState } from "react-hook-form";
 import { FormInput } from "../components";
-import { MiniLayout } from "../layouts/MiniLayot";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegisterFormScheme } from "../utils/validation";
 import { Api } from "../utils/api";
@@ -33,7 +32,11 @@ const RegisterPage: NextPage<RegisterPageProps> = () => {
       setErrorMessage("");
       router.push("/");
     } catch (err) {
-      setErrorMessage("Ошибка при регистрации");
+      if(err?.response?.data?.code === "23505") {
+        setErrorMessage("Аккаунт с таким email уже существуют");
+      } else {
+        setErrorMessage("Ошибка при регистрации");
+      }
     }
   };
 

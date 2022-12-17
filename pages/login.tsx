@@ -11,7 +11,7 @@ import { UserLoginDto, UserRegisterDto } from "../utils/api/types";
 import { useRouter } from "next/router";
 import { AuthLayout } from "../layouts/AuthLayout";
 import { useDispatch } from "react-redux";
-import { setUserData } from "../redux/user/slice";
+import { useActions } from "../hooks/useActions";
 
 interface LoginPageProps {}
 
@@ -19,6 +19,7 @@ const LoginPage: NextPage<LoginPageProps> = () => {
   const [errorMessage, setErrorMessage] = React.useState("");
   const router = useRouter();
   const dispatch = useDispatch();
+  const { setUser } = useActions();
 
   const form = useForm({
     mode: "onChange",
@@ -32,11 +33,11 @@ const LoginPage: NextPage<LoginPageProps> = () => {
         maxAge: 30 * 60 * 24 * 60,
         path: "/",
       });
-      dispatch(setUserData(user));
+      dispatch(setUser(user));
       setErrorMessage("");
       router.push("/");
     } catch (err) {
-      setErrorMessage("Ошибка при авторизации");
+      setErrorMessage(err?.response?.data?.message);
     }
   };
 

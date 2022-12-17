@@ -1,3 +1,5 @@
+import { OutputBlockData } from "@editorjs/editorjs";
+
 export type UserRegisterDto = {
   name: string;
   email: string;
@@ -17,4 +19,20 @@ export type TUser = {
   createdAt: string;
   updateAt: string;
   token?: string;
+};
+
+export type TPost = {
+  id: number;
+  title: string;
+  description: string;
+  body: any[];
+  userId: number;
+  views: number;
+  createdAt: string;
+  updateAt: string;
+};
+
+export type CreatePostDto = {
+  title: string;
+  body: OutputBlockData[];
 };

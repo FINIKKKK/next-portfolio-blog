@@ -231,7 +231,7 @@
     padding: 5px 12px;
     border-radius: 5px;
     background-color: rgb(183, 56, 56);
-    color:  #fff;
+    color: #fff;
     margin-top: 10px;
   }
   .inputs {
@@ -919,21 +919,50 @@
     margin-bottom: 25px;
   }
   .img {
-    width: 100%;
-    background-color: rgba(#000, 0.3);
+    position: relative;
     height: 413px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: 0.2s;
+    width: 100%;
+    .box {
+      z-index: 50;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background-color: rgba(#000, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
     &:hover {
-      background-color: rgba(#000, 0.4);
+      .box {
+        background-color: rgba(#000, 0.75);
+      }
     }
     svg {
-      fill: #000;
-      width: 81px;
-      height: 81px;
+      fill: rgb(255, 255, 255);
+      width: 65px;
+      height: 65px;
+    }
+    img {
+      top: 0;
+      left: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    input {
+      opacity: 0;
+      z-index: 100;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
     }
   }
   .category {

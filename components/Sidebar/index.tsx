@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 import ss from "./Sidebar.module.scss";
@@ -7,9 +8,9 @@ type SidebarProps = {};
 export const Sidebar: React.FC<SidebarProps> = () => {
   return (
     <aside className="sidebar">
-      <a href="#" className="block btn">
+      <Link href="/create" className="block btn">
         <span>Создать пост</span>
-      </a>
+      </Link>
       <div className="block search input">
         <input type="text" placeholder="Поиск" />
         <svg width="20" height="20">
