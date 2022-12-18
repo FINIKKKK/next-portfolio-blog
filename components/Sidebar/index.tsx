@@ -1,11 +1,28 @@
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React from "react";
+import { Api } from "../../utils/api";
+import { TPost } from "../../utils/api/types";
 
 import ss from "./Sidebar.module.scss";
 
 type SidebarProps = {};
 
 export const Sidebar: React.FC<SidebarProps> = () => {
+  const [posts, setPosts] = React.useState<TPost[]>([]);
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const posts = await Api().post.getAll();
+        setPosts(posts);
+      } catch (err) {
+        console.warn(err);
+        alert("Ошибка при получении постов");
+      }
+    })();
+  }, []);
+
   return (
     <aside className="sidebar">
       <Link href="/create" className="block btn">
@@ -18,7 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = () => {
         </svg>
       </div>
       <div className="block">
-        <h6 className="title">Categories</h6>
+        <h6 className="title">Категории</h6>
         <div className="categories">
           <a href="#" className="item">
             Dining room (1)
@@ -38,39 +55,29 @@ export const Sidebar: React.FC<SidebarProps> = () => {
         </div>
       </div>
       <div className="block">
-        <div className="title">Recent Posts</div>
+        <div className="title">Последнии посты</div>
         <div className="posts">
-          <div className="post">
-            <a href="#" className="post__title">
-              Cred selfies edison bulb four dollar toast humblebrag
-            </a>
-            <div className="info">
-              <p className="date">May 2, 2020</p>
-              <p className="date"> Ann Summers</p>
+          {posts.slice(0, 3).map((obj) => (
+            <div key={obj.id} className="post">
+              <Link href={`/profile/${obj.user.id}`} className="post__title">
+                {obj.title}
+              </Link>
+              <div className="info">
+                <p className="date">
+                  {new Date(obj.createdAt).toLocaleDateString("ru-RU", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+                <p className="date">{obj.user.name}</p>
+              </div>
             </div>
-          </div>
-          <div className="post">
-            <a href="#" className="post__title">
-              Cred selfies edison bulb four dollar toast humblebrag
-            </a>
-            <div className="info">
-              <p className="date">May 2, 2020</p>
-              <p className="date"> Ann Summers</p>
-            </div>
-          </div>
-          <div className="post">
-            <a href="#" className="post__title">
-              Cred selfies edison bulb four dollar toast humblebrag
-            </a>
-            <div className="info">
-              <p className="date">May 2, 2020</p>
-              <p className="date"> Ann Summers</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
       <div className="block tags">
-        <div className="title">Tags</div>
+        <div className="title">Метки</div>
         <ul className="list">
           <li className="item">
             <a href="#">Dining room futniture</a>

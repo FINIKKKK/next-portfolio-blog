@@ -91,7 +91,10 @@ const CreatePostPage: NextPage<CreatePostPageProps> = ({}) => {
           </div>
         </div>
 
-        <button onClick={onSubmit} className="btn" disabled={isLoading}>
+        <button
+          onClick={onSubmit}
+          className={`btn ${isLoading || !title || body.length === 0 ? "disabled" : ""}`}
+        >
           Опубликовать
         </button>
       </div>

@@ -25,14 +25,29 @@ export type TPost = {
   id: number;
   title: string;
   description: string;
-  body: any[];
+  body: OutputBlockData[];
   userId: number;
   views: number;
   createdAt: string;
   updateAt: string;
+  user: TUser;
 };
 
 export type CreatePostDto = {
   title: string;
   body: OutputBlockData[];
+};
+
+export type CreateCommentDto = {
+  text: string;
+  postId: number;
+};
+
+export type TComment = {
+  id: number;
+  text: string;
+  user: TUser;
+  post: TPost;
+  createdAt: string;
+  updatedAt: string;
 };

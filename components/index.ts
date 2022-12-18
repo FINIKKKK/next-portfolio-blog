@@ -6,3 +6,6 @@ export * from './FormInput';
 export * from './Post';
 export * from './Sidebar';
 export * from './Pagination';
+export * from './Comment';
+
+

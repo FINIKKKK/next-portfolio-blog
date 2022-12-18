@@ -1,5 +1,6 @@
 import React from "react";
 import { Footer, Header, Sidebar } from "../components";
+import { TPost } from "../utils/api/types";
 
 type PostLayoutsProps = {
   children: any;

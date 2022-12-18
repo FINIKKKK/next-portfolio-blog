@@ -1,6 +1,5 @@
 import Link from "next/link";
 import React from "react";
-import { TPost } from "../../utils/api/types";
 
 import ss from "./Post.module.scss";
 
@@ -9,9 +8,18 @@ type PostProps = {
   date: string;
   title: string;
   description: string;
+  userId: number;
+  userName: string;
 };
 
-export const Post: React.FC<PostProps> = ({ id, date, title, description }) => {
+export const Post: React.FC<PostProps> = ({
+  id,
+  date,
+  title,
+  description,
+  userId,
+  userName,
+}) => {
   const newDate = new Date(date).toLocaleDateString("ru-RU", {
     year: "numeric",
     month: "long",
@@ -20,19 +28,19 @@ export const Post: React.FC<PostProps> = ({ id, date, title, description }) => {
 
   return (
     <div className="post">
-      <Link href={`/news/${id}`} className="img">
+      <Link href={`/posts/${id}`} className="img">
         <img src="./static/img/post__img.jpg" alt={title} />
       </Link>
       <div className="info">
         <div className="item date">{newDate}</div>
-        <a href="#" className="item author">
-          Author
-        </a>
+        <Link href={`/profile/${userId}`} className="item author">
+          {userName}
+        </Link>
         <a href="#" className="item category">
           Category
         </a>
       </div>
-      <Link href={`/news/${id}`} className="title">
+      <Link href={`/posts/${id}`} className="title">
         {title}
       </Link>
       <div className="text">{description}</div>

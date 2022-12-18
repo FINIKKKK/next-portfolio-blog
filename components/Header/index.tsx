@@ -17,7 +17,6 @@ export const Header: React.FC<HeaderProps> = () => {
   const { data: userData } = useSelectors((state) => state.user);
   const [activePopup, setActivePopup] = React.useState(false);
   const popupRef = React.useRef<HTMLDivElement>(null);
-  const notices = false;
   const { removeUser } = useActions();
 
   const handleClickOutSide = (e: MouseEvent) => {
@@ -44,9 +43,9 @@ export const Header: React.FC<HeaderProps> = () => {
     <header className="header">
       <div className="container">
         <div className="inner">
-          <a href="index.html" className="logo">
+          <Link href="/" className="logo">
             <Image src={logo} alt="logo" />
-          </a>
+          </Link>
           {!userData?.user?.data && (
             <div className="btns">
               <Link href="/login" className="btn">
@@ -64,15 +63,11 @@ export const Header: React.FC<HeaderProps> = () => {
               className="toProfile"
             >
               <Image src={avatar} alt="avatar" />
-              {notices && <span className="number">99</span>}
               {activePopup && (
                 <div className="popup active">
-                  <a href="#" className="item">
+                  <Link href="/profile" className="item">
                     Профиль
-                  </a>
-                  <a href="#" className="item">
-                    Уведомления {notices && <span>99</span>}
-                  </a>
+                  </Link>
                   <div onClick={onLogout} className="item">
                     Выйти
                   </div>
