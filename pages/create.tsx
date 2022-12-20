@@ -1,8 +1,10 @@
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
 import React from "react";
+import Select from "react-select";
 import { PostLayout } from "../layouts/PostLayout";
 import { Api } from "../utils/api";
+import { TCategory } from "../utils/api/types";
 
 const Editor = dynamic(
   () => import("../components/Editor").then((m) => m.Editor),
@@ -11,12 +13,22 @@ const Editor = dynamic(
   }
 );
 
-interface CreatePostPageProps {}
+interface CreatePostPageProps {
+  categories: TCategory[];
+}
 
-const CreatePostPage: NextPage<CreatePostPageProps> = ({}) => {
+const CreatePostPage: NextPage<CreatePostPageProps> = ({ categories }) => {
+  const updatedCategories = categories.map((item) => {
+    const newItem = { ...item };
+    newItem.value = newItem.id;
+    delete newItem.id;
+    return newItem;
+  });
+
   const [image, setImage] = React.useState(null);
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState([]);
+  const [category, setCategory] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const onChangeImage = (e: any) => {
@@ -25,12 +37,18 @@ const CreatePostPage: NextPage<CreatePostPageProps> = ({}) => {
     }
   };
 
+  // const onChangeCategory = (e: any) => {
+  //   setCategory(e.target.value);
+  // };
+
   const onSubmit = async () => {
     try {
       setIsLoading(true);
+      const selectedCategory = category?.value && category.value;
       const obj = {
         title,
         body,
+        categoryId: selectedCategory,
       };
       const post = await Api().post.create(obj);
       console.log(post);
@@ -45,13 +63,13 @@ const CreatePostPage: NextPage<CreatePostPageProps> = ({}) => {
   return (
     <PostLayout>
       <div className="createPost">
-        <div className="category block">
-          <p>Категория</p>
-          <svg width="20" height="20">
-            <use xlinkHref="./static/img/icons/icons.svg#triangle" />
-          </svg>
-        </div>
-
+        <Select
+          className="category block"
+          placeholder="Категория"
+          value={category}
+          onChange={setCategory}
+          options={updatedCategories}
+        />
         <div className="img block">
           <div className="box">
             <svg width="20" height="20">
@@ -93,13 +111,30 @@ const CreatePostPage: NextPage<CreatePostPageProps> = ({}) => {
 
         <button
           onClick={onSubmit}
-          className={`btn ${isLoading || !title || body.length === 0 ? "disabled" : ""}`}
+          className={`btn ${
+            isLoading || !title || body.length === 0 || !category
+              ? "disabled"
+              : ""
+          }`}
         >
           Опубликовать
         </button>
       </div>
     </PostLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  try {
+    const categories = await Api().category.getAll();
+    return { props: { categories } };
+  } catch (err) {
+    console.warn(err);
+    alert("Ошибка при получении поста");
+    return {
+      props: {},
+    };
+  }
 };
 
 export default CreatePostPage;

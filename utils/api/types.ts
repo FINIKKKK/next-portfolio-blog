@@ -26,7 +26,7 @@ export type TPost = {
   title: string;
   description: string;
   body: OutputBlockData[];
-  userId: number;
+  category: TCategory;
   views: number;
   createdAt: string;
   updateAt: string;
@@ -50,4 +50,9 @@ export type TComment = {
   post: TPost;
   createdAt: string;
   updatedAt: string;
+};
+
+export type TCategory = {
+  id: number;
+  name: string;
 };

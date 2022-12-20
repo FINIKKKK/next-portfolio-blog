@@ -75,8 +75,8 @@ const PostPage: NextPage<PostPageProps> = ({ post, comments }) => {
           <Link href={`/profile/${post.user.id}`} className="item author">
             {post.user.name}
           </Link>
-          <Link href="#" className="item category">
-            Category
+          <Link href={`/posts?categoryId=${post.category.id}`} className="item category">
+            {post.category.name}
           </Link>
         </div>
         <div className="content">

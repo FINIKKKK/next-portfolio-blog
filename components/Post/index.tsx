@@ -10,6 +10,8 @@ type PostProps = {
   description: string;
   userId: number;
   userName: string;
+  categoryId: number;
+  categoryName: string;
 };
 
 export const Post: React.FC<PostProps> = ({
@@ -19,6 +21,8 @@ export const Post: React.FC<PostProps> = ({
   description,
   userId,
   userName,
+  categoryId,
+  categoryName,
 }) => {
   const newDate = new Date(date).toLocaleDateString("ru-RU", {
     year: "numeric",
@@ -36,9 +40,12 @@ export const Post: React.FC<PostProps> = ({
         <Link href={`/profile/${userId}`} className="item author">
           {userName}
         </Link>
-        <a href="#" className="item category">
-          Category
-        </a>
+        <Link
+          href={`/posts?categoryId=${categoryId}`}
+          className="item category"
+        >
+          {categoryName}
+        </Link>
       </div>
       <Link href={`/posts/${id}`} className="title">
         {title}

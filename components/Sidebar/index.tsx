@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React from "react";
 import { Api } from "../../utils/api";
-import { TPost } from "../../utils/api/types";
+import { TCategory, TPost } from "../../utils/api/types";
 
 import ss from "./Sidebar.module.scss";
 
@@ -10,12 +10,15 @@ type SidebarProps = {};
 
 export const Sidebar: React.FC<SidebarProps> = () => {
   const [posts, setPosts] = React.useState<TPost[]>([]);
+  const [categories, setCategories] = React.useState<TCategory[]>([]);
 
   React.useEffect(() => {
     (async () => {
       try {
         const posts = await Api().post.getAll();
+        const categories = await Api().category.getAll();
         setPosts(posts);
+        setCategories(categories);
       } catch (err) {
         console.warn(err);
         alert("Ошибка при получении постов");
@@ -37,21 +40,15 @@ export const Sidebar: React.FC<SidebarProps> = () => {
       <div className="block">
         <h6 className="title">Категории</h6>
         <div className="categories">
-          <a href="#" className="item">
-            Dining room (1)
-          </a>
-          <a href="#" className="item">
-            Office furniture (12)
-          </a>
-          <a href="#" className="item">
-            Simple interiror design (2)
-          </a>
-          <a href="#" className="item">
-            Design (4)
-          </a>
-          <a href="#" className="item">
-            Bedroom Furniture (1)
-          </a>
+          {categories.map((obj) => (
+            <Link
+              key={obj.id}
+              href={`/posts?categoryId=${obj.id}`}
+              className="item"
+            >
+              {obj.name} (1)
+            </Link>
+          ))}
         </div>
       </div>
       <div className="block">

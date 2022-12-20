@@ -910,7 +910,6 @@
   }
 }
 
-
 // --------- createPost ----------
 .createPost {
   .block {
@@ -964,24 +963,25 @@
     }
   }
   .category {
-    border: 2px solid #000;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    padding: 7px 15px;
-    border-radius: 25px;
-    cursor: pointer;
-    &.active {
-      svg {
-        transform: rotate(180deg);
-      }
-    }
-    svg {
-      transition: 0.2s;
-      margin-left: 10px;
-      width: 12px;
-      height: auto;
-    }
+    // border: 2px solid #000;
+    // font-weight: 700;
+    // display: inline-flex;
+    // align-items: center;
+    // padding: 7px 15px;
+    // border-radius: 25px;
+    // cursor: pointer;
+    // &.active {
+    //   svg {
+    //     transform: rotate(180deg);
+    //   }
+    // }
+    // svg {
+    //   transition: 0.2s;
+    //   margin-left: 10px;
+    //   width: 12px;
+    //   height: auto;
+    // }
+    z-index: 150;
   }
   .title {
     width: 100%;

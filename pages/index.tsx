@@ -21,6 +21,8 @@ const HomePage: NextPage<HomePageProps> = ({ posts }) => {
             date={obj.createdAt}
             userId={obj.user.id}
             userName={obj.user.name}
+            categoryId={obj.category.id}
+            categoryName={obj.category.name}
           />
         ))}
       </div>
