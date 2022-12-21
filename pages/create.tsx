@@ -1,5 +1,6 @@
 import { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import React from "react";
 import Select from "react-select";
 import { PostLayout } from "../layouts/PostLayout";
@@ -18,28 +19,31 @@ interface CreatePostPageProps {
 }
 
 const CreatePostPage: NextPage<CreatePostPageProps> = ({ categories }) => {
+  console.log(categories);
+
   const updatedCategories = categories.map((item) => {
     const newItem = { ...item };
     newItem.value = newItem.id;
+    newItem.label = newItem.name;
     delete newItem.id;
+    delete newItem.name;
     return newItem;
   });
+
+  console.log(updatedCategories);
 
   const [image, setImage] = React.useState(null);
   const [title, setTitle] = React.useState("");
   const [body, setBody] = React.useState([]);
   const [category, setCategory] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
+  const router = useRouter();
 
   const onChangeImage = (e: any) => {
     if (e.target.files) {
       setImage(e.target.files[0]);
     }
   };
-
-  // const onChangeCategory = (e: any) => {
-  //   setCategory(e.target.value);
-  // };
 
   const onSubmit = async () => {
     try {
@@ -52,6 +56,7 @@ const CreatePostPage: NextPage<CreatePostPageProps> = ({ categories }) => {
       };
       const post = await Api().post.create(obj);
       console.log(post);
+      router.push("/");
     } catch (err) {
       console.warn(err);
       alert("Ошибка при создании поста");
@@ -130,7 +135,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return { props: { categories } };
   } catch (err) {
     console.warn(err);
-    alert("Ошибка при получении поста");
+    alert("Ошибка при получении категорий");
     return {
       props: {},
     };

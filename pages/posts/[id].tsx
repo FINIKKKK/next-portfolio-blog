@@ -11,14 +11,26 @@ import ss from "./post.module.scss";
 
 interface PostPageProps {
   post: TPost;
-  comments: TComment[];
 }
 
-const PostPage: NextPage<PostPageProps> = ({ post, comments }) => {
+const PostPage: NextPage<PostPageProps> = ({ post }) => {
   const [isActive, setIsActive] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
+  const [comments, setComments] = React.useState<TComment[]>([]);
   const refInput = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const comments = await Api().comment.getAll(post.id);
+        setComments(comments);
+      } catch (err) {
+        console.warn(err);
+        alert("Ошибка при получении комментариев");
+      }
+    })();
+  }, []);
 
   const newDate = new Date(post.createdAt).toLocaleDateString("ru-RU", {
     year: "numeric",
@@ -38,7 +50,8 @@ const PostPage: NextPage<PostPageProps> = ({ post, comments }) => {
         postId: post.id,
       };
       const comment = await Api().comment.create(obj);
-      setInputValue('')
+      setComments((prev) => [comment, ...prev]);
+      setInputValue("");
       setIsActive(false);
     } catch (err) {
       console.warn(err);
@@ -57,9 +70,9 @@ const PostPage: NextPage<PostPageProps> = ({ post, comments }) => {
     }
   };
   React.useEffect(() => {
-  document.addEventListener('click', handleClickOutSide);
+    document.addEventListener("click", handleClickOutSide);
     return () => {
-      document.removeEventListener('click', handleClickOutSide);
+      document.removeEventListener("click", handleClickOutSide);
     };
   }, []);
 
@@ -75,7 +88,10 @@ const PostPage: NextPage<PostPageProps> = ({ post, comments }) => {
           <Link href={`/profile/${post.user.id}`} className="item author">
             {post.user.name}
           </Link>
-          <Link href={`/posts?categoryId=${post.category.id}`} className="item category">
+          <Link
+            href={`/posts?categoryId=${post.category.id}`}
+            className="item category"
+          >
             {post.category.name}
           </Link>
         </div>
@@ -119,12 +135,16 @@ const PostPage: NextPage<PostPageProps> = ({ post, comments }) => {
       <div className="comments">
         <div className="header">
           <h4 className="title">Комменты:</h4>
-          <div ref={refInput} onClick={() => setIsActive(true)} className="input">
+          <div
+            ref={refInput}
+            onClick={() => setIsActive(true)}
+            className="input"
+          >
             <textarea
               value={inputValue}
               onChange={onChangeInput}
               className={isActive || inputValue ? "active" : ""}
-              placeholder="Введите комментарий:"
+              placeholder="Оставить комментарий:"
             ></textarea>
             {inputValue && (
               <svg
@@ -153,11 +173,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   try {
     const id = ctx?.params?.id;
     const post = await Api(ctx).post.getOne(+id);
-    const comments = await Api(ctx).comment.getAll(+id);
     return {
       props: {
         post,
-        comments,
       },
     };
   } catch (err) {

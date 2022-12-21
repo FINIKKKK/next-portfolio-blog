@@ -42,10 +42,12 @@ export const getServerSideProps = async () => {
   } catch (err) {
     console.warn(err);
     alert("Ошибка при получении постов");
+    return {
+      props: {
+        posts: null,
+      },
+    };
   }
-  return {
-    props: { posts: null },
-  };
 };
 
 export default HomePage;

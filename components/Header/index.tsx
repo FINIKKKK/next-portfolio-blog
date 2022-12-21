@@ -3,7 +3,7 @@ import Link from "next/link";
 import { destroyCookie } from "nookies";
 import React from "react";
 import { useSelector } from "react-redux";
-import avatar from "../../assets/img/avatar.png";
+import avatar from "../../public/static/img/avatar.png";
 import { useActions } from "../../hooks/useActions";
 import { useSelectors } from "../../hooks/useSelectors";
 
