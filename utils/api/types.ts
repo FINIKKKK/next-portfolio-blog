@@ -56,3 +56,8 @@ export type TCategory = {
   id: number;
   name: string;
 };
+
+
+export type UpdateCommentDto = {
+  text: string;
+};

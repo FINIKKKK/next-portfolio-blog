@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { destroyCookie } from "nookies";
+import { destroyCookie, setCookie } from "nookies";
 import React from "react";
 import { useSelector } from "react-redux";
 import avatar from "../../public/static/img/avatar.png";
@@ -36,7 +36,7 @@ export const Header: React.FC<HeaderProps> = () => {
 
   const onLogout = () => {
     removeUser();
-    destroyCookie(null, "token");
+    setCookie(null, 'token', '', { maxAge: 0 });
   };
 
   return (

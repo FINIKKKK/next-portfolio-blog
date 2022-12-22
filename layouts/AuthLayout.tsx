@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import registerImg from "../assets/img/register__img.jpg";
+import registerImg from "../public/static/img/register__img.jpg";
 
 type AuthLayoutsProps = {
   children: any;
