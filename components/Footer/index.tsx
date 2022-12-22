@@ -9,7 +9,7 @@ export const Footer: React.FC<FooterProps> = () => {
     <footer className={ss.footer}>
       <div className="container">
         <div className={ss.inner}>
-          <p className={ss.copy}>Макет создан Dmitiy Bozhko</p>
+          <p className={ss.copy}>Создатель макета Dmitiy Bozhko</p>
           <ul className={ss.soclist}>
             <li className={ss.soclist__item}>
               <a href="#">

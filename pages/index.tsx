@@ -3,16 +3,41 @@ import { Pagination, Post, Sidebar } from "../components";
 import { PostLayout } from "../layouts/PostLayout";
 import { Api } from "../utils/api";
 import { TPost } from "../utils/api/types";
+import React from "react";
 
-interface HomePageProps {
+export interface HomePageProps {
+  total: number;
   posts: TPost[];
 }
 
-const HomePage: NextPage<HomePageProps> = ({ posts }) => {
+const HomePage: NextPage = ({}) => {
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [total, setTotal] = React.useState<number>(0);
+  const [items, setItems] = React.useState<TPost[]>([]);
+  const limit = 3;
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        window.scrollTo(0, 0);
+        const params = {
+          limit,
+          page: currentPage,
+        };
+        const posts = await Api().post.getAll(params);
+        setTotal(posts.total);
+        setItems(posts.posts);
+      } catch (err) {
+        console.warn(err);
+        alert("Ошибка при получении постов");
+      }
+    })();
+  }, [currentPage]);
+
   return (
     <PostLayout>
       <div className="posts">
-        {posts.map((obj: TPost) => (
+        {items.map((obj: TPost) => (
           <Post
             key={obj.id}
             id={obj.id}
@@ -26,28 +51,34 @@ const HomePage: NextPage<HomePageProps> = ({ posts }) => {
           />
         ))}
       </div>
-      {/* <Pagination /> */}
+      <Pagination limit={limit} total={total} setCurrentPage={setCurrentPage} />
     </PostLayout>
   );
 };
 
-export const getServerSideProps = async () => {
-  try {
-    const posts = await Api().post.getAll();
-    return {
-      props: {
-        posts,
-      },
-    };
-  } catch (err) {
-    console.warn(err);
-    alert("Ошибка при получении постов");
-    return {
-      props: {
-        posts: null,
-      },
-    };
-  }
-};
+// export const getServerSideProps = async () => {
+//   try {
+//     const params = {
+//       limit: 2,
+//       page: 1,
+//     };
+//     const posts = await Api().post.getAll(params);
+
+//     return {
+//       props: {
+//         total: posts.total,
+//         posts: posts.posts,
+//       },
+//     };
+//   } catch (err) {
+//     console.warn(err);
+//     alert("Ошибка при получении постов");
+//     return {
+//       props: {
+//         posts: null,
+//       },
+//     };
+//   }
+// };
 
 export default HomePage;

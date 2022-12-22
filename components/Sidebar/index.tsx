@@ -15,9 +15,13 @@ export const Sidebar: React.FC<SidebarProps> = () => {
   React.useEffect(() => {
     (async () => {
       try {
-        const posts = await Api().post.getAll();
+        const params = {
+          limit: 3,
+          page: 1,
+        };
+        const posts = await Api().post.getAll(params);
         const categories = await Api().category.getAll();
-        setPosts(posts);
+        setPosts(posts.posts);
         setCategories(categories);
       } catch (err) {
         console.warn(err);

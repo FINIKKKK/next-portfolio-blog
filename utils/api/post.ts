@@ -1,9 +1,12 @@
 import { AxiosInstance } from "axios";
-import { CreatePostDto, TPost } from "./types";
+import { HomePageProps } from "../../pages";
+import { CreatePostDto, PostsParams, TPost } from "./types";
 
 export const PostApi = (instance: AxiosInstance) => ({
-  async getAll() {
-    const { data } = await instance.get<TPost[]>("/posts");
+  async getAll(dto: PostsParams) {
+    const { data } = await instance.get<PostsParams, { data: HomePageProps }>(
+      `/posts?limit=${dto.limit}&page=${dto.page}`
+    );
     return data;
   },
   async getOne(id: number) {

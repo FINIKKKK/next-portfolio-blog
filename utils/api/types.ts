@@ -61,3 +61,8 @@ export type TCategory = {
 export type UpdateCommentDto = {
   text: string;
 };
+
+export type PostsParams = {
+  limit: number;
+  page: number;
+};
