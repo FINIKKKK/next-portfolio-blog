@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 import { HomePageProps } from "../../pages";
-import { CreatePostDto, PostsParams, TPost } from "./types";
+import { CreatePostDto, CreateTagDto, PostsParams, TPost, UpdatePostDto } from "./types";
 
 export const PostApi = (instance: AxiosInstance) => ({
   async getAll(dto: PostsParams) {
@@ -18,6 +18,17 @@ export const PostApi = (instance: AxiosInstance) => ({
       "/posts",
       dto
     );
+    return data;
+  },
+  async update(id: number, dto: UpdatePostDto) {
+    const { data } = await instance.patch<UpdatePostDto, { data: TPost }>(
+      `/posts/${id}`,
+      dto
+    );
+    return data;
+  },
+  async remove(id: number) {
+    const { data } = await instance.delete<TPost>(`/posts/${id}`);
     return data;
   },
 });

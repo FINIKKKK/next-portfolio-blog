@@ -47,7 +47,7 @@ export const Sidebar: React.FC<SidebarProps> = () => {
           {categories.map((obj) => (
             <Link
               key={obj.id}
-              href={`/posts?categoryId=${obj.id}`}
+              href={`/posts?page=1&categoryId=${obj.id}`}
               className="item"
             >
               {obj.name} (1)

@@ -36,6 +36,13 @@ export type TPost = {
 export type CreatePostDto = {
   title: string;
   body: OutputBlockData[];
+  categoryId: number;
+};
+
+export type UpdatePostDto = {
+  title: string;
+  body: OutputBlockData[];
+  category: number;
 };
 
 export type CreateCommentDto = {
@@ -57,7 +64,6 @@ export type TCategory = {
   name: string;
 };
 
-
 export type UpdateCommentDto = {
   text: string;
 };
@@ -65,4 +71,13 @@ export type UpdateCommentDto = {
 export type PostsParams = {
   limit: number;
   page: number;
+};
+
+export type CreateTagDto = {
+  text: string;
+};
+
+export type TTag = {
+  id: number;
+  text: string;
 };

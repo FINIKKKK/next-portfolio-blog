@@ -4,6 +4,7 @@ import Cookies, { parseCookies } from "nookies";
 import { CategoryApi } from "./category";
 import { CommentApi } from "./comment";
 import { PostApi } from "./post";
+import { TagApi } from "./tag";
 import { UserApi } from "./user";
 
 export type ApiReturnTypes = {
@@ -11,6 +12,7 @@ export type ApiReturnTypes = {
   post: ReturnType<typeof PostApi>;
   comment: ReturnType<typeof CommentApi>;
   category: ReturnType<typeof CategoryApi>;
+  tag: ReturnType<typeof TagApi>;
 };
 
 export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
@@ -29,5 +31,6 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
     post: PostApi(instance),
     comment: CommentApi(instance),
     category: CategoryApi(instance),
+    tag: TagApi(instance),
   };
 };

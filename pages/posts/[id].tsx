@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { Comment } from "../../components";
 import { useSelectors } from "../../hooks/useSelectors";
@@ -23,6 +24,7 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
   const refPopup = React.useRef<HTMLDivElement>(null);
   const { data: userData } = useSelectors((state) => state.user);
   const [isVisible, setIsVisible] = React.useState(false);
+  const router = useRouter();
 
   React.useEffect(() => {
     (async () => {
@@ -87,6 +89,17 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
     };
   }, []);
 
+  const onRemovePost = async () => {
+    try {
+      // await Api().comment.removeAllOnPost(post.id)
+      await Api().post.remove(post.id);
+      router.push("/");
+    } catch (err) {
+      console.warn(err);
+      alert("Ошибка при удалении поста");
+    }
+  };
+
   return (
     <PostLayout>
       <div className="post">
@@ -116,8 +129,10 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
             </svg>
             {isVisible && (
               <div className="popup">
-                <div className="item">Редактировать</div>
-                <div className="item">Удалить</div>
+                <div className="item"><Link href={`/create/${post.id}`}> Редактировать</Link></div>
+                <div onClick={onRemovePost} className="item">
+                  Удалить
+                </div>
               </div>
             )}
           </div>
@@ -178,28 +193,30 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
       <div className="comments">
         <div className="header">
           <h4 className="title">Комменты:</h4>
-          <div
-            ref={refInput}
-            onClick={() => setIsActive(true)}
-            className="input"
-          >
-            <textarea
-              value={inputValue}
-              onChange={onChangeInput}
-              className={isActive || inputValue ? "active" : ""}
-              placeholder="Оставить комментарий:"
-            ></textarea>
-            {inputValue && (
-              <svg
-                onClick={onCreateComment}
-                className={isLoading ? "disabled" : ""}
-                width="20"
-                height="20"
-              >
-                <use xlinkHref="../../static/img/icons/icons.svg#submit" />
-              </svg>
-            )}
-          </div>
+          {userData?.user?.data && (
+            <div
+              ref={refInput}
+              onClick={() => setIsActive(true)}
+              className="input"
+            >
+              <textarea
+                value={inputValue}
+                onChange={onChangeInput}
+                className={isActive || inputValue ? "active" : ""}
+                placeholder="Оставить комментарий:"
+              ></textarea>
+              {inputValue && (
+                <svg
+                  onClick={onCreateComment}
+                  className={isLoading ? "disabled" : ""}
+                  width="20"
+                  height="20"
+                >
+                  <use xlinkHref="../../static/img/icons/icons.svg#submit" />
+                </svg>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="list">

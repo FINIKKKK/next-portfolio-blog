@@ -1,4 +1,4 @@
-import { GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import { Pagination, Post, Sidebar } from "../components";
 import { PostLayout } from "../layouts/PostLayout";
 import { Api } from "../utils/api";
@@ -10,7 +10,7 @@ export interface HomePageProps {
   posts: TPost[];
 }
 
-const HomePage: NextPage = ({}) => {
+const HomePage: NextPage = ({  }) => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [total, setTotal] = React.useState<number>(0);
   const [items, setItems] = React.useState<TPost[]>([]);
@@ -56,7 +56,7 @@ const HomePage: NextPage = ({}) => {
   );
 };
 
-// export const getServerSideProps = async () => {
+// export const getServerSideProps: GetServerSideProps = async () => {
 //   try {
 //     const params = {
 //       limit: 2,

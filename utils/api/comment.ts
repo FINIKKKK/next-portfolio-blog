@@ -19,6 +19,10 @@ export const CommentApi = (instance: AxiosInstance) => ({
     const { data } = await instance.patch(`/comments/${id}`, dto);
     return data;
   },
+  async removeAllOnPost(postId: number) {
+    const { data } = await instance.delete(`/comments?postId=${postId}`);
+    return data;
+  },
   async remove(id: number) {
     const { data } = await instance.delete(`/comments/${id}`);
     return data;

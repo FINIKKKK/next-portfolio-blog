@@ -34,6 +34,8 @@ export const Comment: React.FC<CommentProps> = ({
   const [inputValue, setInputValue] = React.useState(text);
   const [isLoading, setIsLoading] = React.useState(false);
   const [commentText, setCommentText] = React.useState(text);
+  const refMessage = React.useRef<HTMLParagraphElement>(null);
+  const [fullMessage, setFullMessage] = React.useState(false);
 
   const handleClickOutSide = (e: MouseEvent) => {
     const _event = e as MouseEvent & {
@@ -87,7 +89,7 @@ export const Comment: React.FC<CommentProps> = ({
   };
 
   return (
-    <div className="comment @@class">
+    <div className="comment">
       <div className="inner">
         {userData?.user?.data && userData?.user?.data.id === user.id && (
           <div ref={refPopup} className="popupBox">
@@ -138,7 +140,14 @@ export const Comment: React.FC<CommentProps> = ({
             <div className="date">{newDate}</div>
           </div>
           <div className="message">
-            {!visibleInput && <p className="text">{commentText}</p>}
+            {!visibleInput && (
+              <p
+                ref={refMessage}
+                className={`text ${!fullMessage ? "hide" : ""}`}
+              >
+                {commentText}
+              </p>
+            )}
             {visibleInput && (
               <div className="input">
                 <textarea
@@ -157,10 +166,21 @@ export const Comment: React.FC<CommentProps> = ({
                 )}
               </div>
             )}
-            {/* <div className="comment__footer">
-              <button className="more message__btn">Подробнее</button>
+            <div className="comment__footer">
+              {visibleInput && (
+                <button onClick={() => setVisibleInput(false)}>Закрыть</button>
+              )}
+              {!visibleInput && refMessage?.current &&
+                refMessage?.current?.offsetHeight > 80 && (
+                  <button
+                    onClick={() => setFullMessage(!fullMessage)}
+                    className="more message__btn"
+                  >
+                    Подробнее
+                  </button>
+                )}
               <button className="answer message__btn">Ответить</button>
-            </div> */}
+            </div>
             {/* <div className="input">
               <textarea placeholder="Введите комментарий:"></textarea>
               <svg width="20" height="20">
