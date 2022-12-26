@@ -3,7 +3,6 @@ import React from "react";
 import { useSelectors } from "../../hooks/useSelectors";
 import { Api } from "../../utils/api";
 import { TComment, TPost, TUser } from "../../utils/api/types";
-import { Answer } from "./Answer";
 
 import ss from "./Comment.module.scss";
 
@@ -12,22 +11,23 @@ type CommentProps = {
   text: string;
   createdAt: string;
   user: TUser;
-  post: TPost;
-  removeComment: (id: number) => void;
-  children?: TComment[];
-  parentName?: string;
-  removeAnswer?: (id: number) => void;
+  postId: number;
+  parentId: number;
+  parentUser: TUser;
+  addAnswer: (comment: TComment) => void;
+  removeAnswer: (id: number) => void;
 };
 
-export const Comment: React.FC<CommentProps> = ({
+export const Answer: React.FC<CommentProps> = ({
   id,
   text,
   createdAt: date,
   user,
-  children,
-  post,
-  removeComment,
-  parentName,
+  postId,
+  parentId,
+  addAnswer,
+  parentUser,
+  removeAnswer,
 }) => {
   const newDate = new Date(date).toLocaleDateString("ru-RU", {
     day: "2-digit",
@@ -48,17 +48,12 @@ export const Comment: React.FC<CommentProps> = ({
   const [showAnswers, setShowAnswers] = React.useState(false);
   const [showAnswerInput, setShowAnswerInput] = React.useState(false);
   const [answerInputValue, setAnswerInputValue] = React.useState("");
-  const [answers, setAnswers] = React.useState<TComment[]>(children || []);
   const refAnswerInput = React.useRef<HTMLTextAreaElement>(null);
   const refAnswerButton = React.useRef<HTMLButtonElement>(null);
-  const refTextarea = React.useRef<HTMLTextAreaElement>(null);
-  const refUpdateTextareaBox = React.useRef<HTMLDivElement>(null);
-  const refUpdateTextarea = React.useRef<HTMLTextAreaElement>(null);
-  const refUpdateButtonOpen = React.useRef<HTMLDivElement>(null);
-  const refUpdateButtonClose = React.useRef<HTMLButtonElement>(null);
   const [messageMore, setMessageMore] = React.useState(
     refMessage?.current && refMessage?.current?.offsetHeight > 80
   );
+  const refUpdateTextarea = React.useRef<HTMLTextAreaElement>(null);
 
   const handleClickOutSide = (e: MouseEvent) => {
     const _event = e as MouseEvent & {
@@ -75,17 +70,6 @@ export const Comment: React.FC<CommentProps> = ({
     ) {
       setShowAnswerInput(false);
       setAnswerInputValue("");
-    }
-    if (
-      refUpdateTextareaBox.current &&
-      !_event.path.includes(refUpdateTextareaBox.current) &&
-      refUpdateButtonOpen.current &&
-      !_event.path.includes(refUpdateButtonOpen.current) &&
-      refUpdateButtonClose.current &&
-      !_event.path.includes(refUpdateButtonClose.current)
-    ) {
-      setVisibleInput(false);
-      setInputValue(text);
     }
   };
   React.useEffect(() => {
@@ -114,22 +98,11 @@ export const Comment: React.FC<CommentProps> = ({
     );
   }, [visibleInput]);
 
-  const removeAnswer = (id: number) => {
-    setAnswers((prev) => prev.filter((obj) => obj.id !== id));
-  };
-  const addAnswer = (comment: TComment) => {
-    setAnswers((prev) => [comment, ...prev]);
-  };
-
   const onRemove = async () => {
     if (window.confirm("Вы действительно хотите удалить комментарий?")) {
       try {
         await Api().comment.remove(id);
-        if (!parentName) {
-          removeComment(id);
-        } else {
-          removeAnswer(id);
-        }
+        removeAnswer(id);
       } catch (err) {
         console.warn(err);
         alert("Ошибка при удалении комментария");
@@ -158,20 +131,19 @@ export const Comment: React.FC<CommentProps> = ({
     }
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (parentUserId: number) => {
     try {
       setIsLoading(true);
       const obj = {
         text: answerInputValue,
-        postId: post.id,
-        parentId: id,
-        parentUserId: user.id,
+        postId,
+        parentId,
+        parentUserId,
       };
       const comment = await Api().comment.create(obj);
       setShowAnswerInput(false);
       setAnswerInputValue("");
-      setAnswers((prev) => [comment, ...prev]);
-      setShowAnswers(true);
+      addAnswer(comment);
     } catch (err) {
       console.warn(err);
       alert("Ошибка при создании комментария");
@@ -224,11 +196,7 @@ export const Comment: React.FC<CommentProps> = ({
             </svg>
             {isVisible && (
               <div className="popup">
-                <div
-                  ref={refUpdateButtonOpen}
-                  onClick={openInput}
-                  className="item"
-                >
+                <div onClick={openInput} className="item">
                   Редактировать
                 </div>
                 <div onClick={onRemove} className="item">
@@ -260,24 +228,18 @@ export const Comment: React.FC<CommentProps> = ({
                 ref={refMessage}
                 className={`text ${!fullMessage ? "hide" : ""}`}
               >
-                {parentName && <span>@{parentName} </span>}
+                <span>@{parentUser.name} </span>
                 {commentText}
               </p>
             )}
             {visibleInput && (
-              <div ref={refUpdateTextareaBox} className="input">
+              <div className="input">
                 <textarea
                   ref={refUpdateTextarea}
                   value={inputValue}
                   onChange={(e: any) => setInputValue(e.target.value)}
-                  maxLength={350}
                   rows={1}
                 ></textarea>
-                {inputValue.length === 350 && (
-                  <p className="mark">
-                    Максимальная размер сообщения 350 символов
-                  </p>
-                )}
                 {inputValue && (
                   <svg
                     onClick={onUpdate}
@@ -292,16 +254,14 @@ export const Comment: React.FC<CommentProps> = ({
             )}
             <div className="comment__footer">
               {visibleInput && (
-                <button ref={refUpdateButtonClose} onClick={closeUpdateInput}>
-                  Закрыть
-                </button>
+                <button onClick={closeUpdateInput}>Закрыть</button>
               )}
               {!visibleInput && messageMore && (
                 <button
                   onClick={() => setFullMessage(!fullMessage)}
                   className="more message__btn"
                 >
-                  {!fullMessage ? "Подробнее" : "Скрыть"}
+                  Подробнее
                 </button>
               )}
               <button
@@ -319,47 +279,16 @@ export const Comment: React.FC<CommentProps> = ({
                   value={answerInputValue}
                   onChange={(e: any) => setAnswerInputValue(e.target.value)}
                   placeholder="Введите комментарий:"
-                  maxLength={350}
                   rows={1}
                 ></textarea>
-                {answerInputValue.length === 350 && (
-                  <p className="mark">
-                    Максимальная размер сообщения 350 символов
-                  </p>
-                )}
-                <svg onClick={onSubmit} width="20" height="20">
+                <svg onClick={() => onSubmit(user.id)} width="20" height="20">
                   <use xlinkHref="../../static/img/icons/icons.svg#submit" />
                 </svg>
-              </div>
-            )}
-            {answers && answers.length > 0 && (
-              <div
-                onClick={() => setShowAnswers(!showAnswers)}
-                className={`show ${!showAnswers ? "active" : ""}`}
-              >
-                <svg width="20" height="20">
-                  <use xlinkHref="../../static/img/icons/icons.svg#triangle" />
-                </svg>
-                <p>Ответы</p>
               </div>
             )}
           </div>
         </div>
       </div>
-      {answers && showAnswers && (
-        <div className="answerList">
-          {answers.map((obj) => (
-            <Answer
-              key={obj.id}
-              {...obj}
-              postId={post.id}
-              parentId={id}
-              addAnswer={addAnswer}
-              removeAnswer={removeAnswer}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 };

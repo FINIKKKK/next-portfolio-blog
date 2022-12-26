@@ -48,6 +48,7 @@ export type UpdatePostDto = {
 export type CreateCommentDto = {
   text: string;
   postId: number;
+  parentId?: number;
 };
 
 export type TComment = {
@@ -57,6 +58,8 @@ export type TComment = {
   post: TPost;
   createdAt: string;
   updatedAt: string;
+  parentUser: TUser;
+  children: TComment[];
 };
 
 export type TCategory = {
@@ -81,3 +84,7 @@ export type TTag = {
   id: number;
   text: string;
 };
+
+export type TPost2 = {
+  random2Posts: { id: number; title: string }[];
+} & TPost;

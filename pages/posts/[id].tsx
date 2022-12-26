@@ -7,12 +7,12 @@ import { Comment } from "../../components";
 import { useSelectors } from "../../hooks/useSelectors";
 import { PostLayout } from "../../layouts/PostLayout";
 import { Api } from "../../utils/api";
-import { TComment, TPost } from "../../utils/api/types";
+import { TComment, TPost, TPost2 } from "../../utils/api/types";
 
 import ss from "./post.module.scss";
 
 interface PostPageProps {
-  post: TPost;
+  post: TPost2;
 }
 
 const PostPage: NextPage<PostPageProps> = ({ post }) => {
@@ -25,6 +25,7 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
   const { data: userData } = useSelectors((state) => state.user);
   const [isVisible, setIsVisible] = React.useState(false);
   const router = useRouter();
+  const refTextarea = React.useRef<HTMLTextAreaElement>(null);
 
   React.useEffect(() => {
     (async () => {
@@ -48,9 +49,13 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
     day: "numeric",
   });
 
-  const onChangeInput = (e: any) => {
-    setInputValue(e.target.value);
-  };
+  React.useEffect(() => {
+    if (refTextarea.current) {
+      refTextarea.current.style.height = "auto";
+      refTextarea.current.style.height =
+        refTextarea.current.scrollHeight + 3 + "px";
+    }
+  }, [inputValue]);
 
   const onCreateComment = async () => {
     try {
@@ -90,13 +95,16 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
   }, []);
 
   const onRemovePost = async () => {
-    try {
-      // await Api().comment.removeAllOnPost(post.id)
-      await Api().post.remove(post.id);
-      router.push("/");
-    } catch (err) {
-      console.warn(err);
-      alert("Ошибка при удалении поста");
+    if (window.confirm("Вы точно хотите удалить пост?")) {
+      try {
+        await Api().post.remove(post.id);
+        router.push("/");
+      } catch (err) {
+        console.warn(err);
+        alert("Ошибка при удалении поста");
+      }
+    } else {
+      setIsVisible(false);
     }
   };
 
@@ -129,7 +137,9 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
             </svg>
             {isVisible && (
               <div className="popup">
-                <div className="item"><Link href={`/create/${post.id}`}> Редактировать</Link></div>
+                <div className="item">
+                  <Link href={`/create/${post.id}`}>Редактировать</Link>
+                </div>
                 <div onClick={onRemovePost} className="item">
                   Удалить
                 </div>
@@ -176,18 +186,18 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
       </div>
 
       <div className="navigation">
-        <a href="#" className="item">
+        <Link href={`/posts/${post.random2Posts[0].id}`} className="item">
           <svg className="" width="20" height="20">
             <use xlinkHref="../../static/img/icons/icons.svg#prev" />
           </svg>
-          <p>Cred selfies edison bulb four dollar toast humblebrag</p>
-        </a>
-        <a href="#" className="item">
-          <p>Cred selfies edison bulb four dollar toast humblebrag</p>
+          <p>{post.random2Posts[0].title}</p>
+        </Link>
+        <Link href={`/posts/${post.random2Posts[1].id}`} className="item">
+          <p>{post.random2Posts[1].title}</p>
           <svg className="" width="20" height="20">
             <use xlinkHref="../../static/img/icons/icons.svg#next" />
           </svg>
-        </a>
+        </Link>
       </div>
 
       <div className="comments">
@@ -200,11 +210,18 @@ const PostPage: NextPage<PostPageProps> = ({ post }) => {
               className="input"
             >
               <textarea
+                ref={refTextarea}
                 value={inputValue}
-                onChange={onChangeInput}
-                className={isActive || inputValue ? "active" : ""}
+                onChange={(e: any) => setInputValue(e.target.value)}
                 placeholder="Оставить комментарий:"
+                maxLength={350}
+                rows={1}
               ></textarea>
+              {inputValue.length === 350 && (
+                <p className="mark">
+                  Максимальная размер сообщения 350 символов
+                </p>
+              )}
               {inputValue && (
                 <svg
                   onClick={onCreateComment}
