@@ -51,10 +51,7 @@ export const Comment: React.FC<CommentProps> = ({
   const [answers, setAnswers] = React.useState<TComment[]>(children || []);
   const refAnswerInput = React.useRef<HTMLTextAreaElement>(null);
   const refAnswerButton = React.useRef<HTMLButtonElement>(null);
-  const refTextarea = React.useRef<HTMLTextAreaElement>(null);
-  const refUpdateTextareaBox = React.useRef<HTMLDivElement>(null);
   const refUpdateTextarea = React.useRef<HTMLTextAreaElement>(null);
-  const refUpdateButtonOpen = React.useRef<HTMLDivElement>(null);
   const refUpdateButtonClose = React.useRef<HTMLButtonElement>(null);
   const [messageMore, setMessageMore] = React.useState(
     refMessage?.current && refMessage?.current?.offsetHeight > 80
@@ -77,10 +74,10 @@ export const Comment: React.FC<CommentProps> = ({
       setAnswerInputValue("");
     }
     if (
-      refUpdateTextareaBox.current &&
-      !_event.path.includes(refUpdateTextareaBox.current) &&
-      refUpdateButtonOpen.current &&
-      !_event.path.includes(refUpdateButtonOpen.current) &&
+      refUpdateTextarea.current &&
+      !_event.path.includes(refUpdateTextarea.current) &&
+      refPopup.current &&
+      !_event.path.includes(refPopup.current) &&
       refUpdateButtonClose.current &&
       !_event.path.includes(refUpdateButtonClose.current)
     ) {
@@ -224,11 +221,7 @@ export const Comment: React.FC<CommentProps> = ({
             </svg>
             {isVisible && (
               <div className="popup">
-                <div
-                  ref={refUpdateButtonOpen}
-                  onClick={openInput}
-                  className="item"
-                >
+                <div onClick={openInput} className="item">
                   Редактировать
                 </div>
                 <div onClick={onRemove} className="item">
@@ -265,7 +258,7 @@ export const Comment: React.FC<CommentProps> = ({
               </p>
             )}
             {visibleInput && (
-              <div ref={refUpdateTextareaBox} className="input">
+              <div className="input">
                 <textarea
                   ref={refUpdateTextarea}
                   value={inputValue}
@@ -278,7 +271,7 @@ export const Comment: React.FC<CommentProps> = ({
                     Максимальная размер сообщения 350 символов
                   </p>
                 )}
-                {inputValue && (
+                {inputValue.length > 0 && (
                   <svg
                     onClick={onUpdate}
                     className={isLoading ? "disabled" : ""}
@@ -327,9 +320,11 @@ export const Comment: React.FC<CommentProps> = ({
                     Максимальная размер сообщения 350 символов
                   </p>
                 )}
-                <svg onClick={onSubmit} width="20" height="20">
-                  <use xlinkHref="../../static/img/icons/icons.svg#submit" />
-                </svg>
+                {answerInputValue.length > 0 && (
+                  <svg onClick={onSubmit} width="20" height="20">
+                    <use xlinkHref="../../static/img/icons/icons.svg#submit" />
+                  </svg>
+                )}
               </div>
             )}
             {answers && answers.length > 0 && (

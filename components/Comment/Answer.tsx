@@ -39,6 +39,7 @@ export const Answer: React.FC<CommentProps> = ({
   const [isVisible, setIsVisible] = React.useState(false);
   const refPopup = React.useRef<HTMLDivElement>(null);
   const { data: userData } = useSelectors((state) => state.user);
+  uss
   const [visibleInput, setVisibleInput] = React.useState(false);
   const [inputValue, setInputValue] = React.useState(text);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -54,6 +55,7 @@ export const Answer: React.FC<CommentProps> = ({
     refMessage?.current && refMessage?.current?.offsetHeight > 80
   );
   const refUpdateTextarea = React.useRef<HTMLTextAreaElement>(null);
+  const refUpdateButtonClose = React.useRef<HTMLButtonElement>(null);
 
   const handleClickOutSide = (e: MouseEvent) => {
     const _event = e as MouseEvent & {
@@ -70,6 +72,17 @@ export const Answer: React.FC<CommentProps> = ({
     ) {
       setShowAnswerInput(false);
       setAnswerInputValue("");
+    }
+    if (
+      refUpdateTextarea.current &&
+      !_event.path.includes(refUpdateTextarea.current) &&
+      refPopup.current &&
+      !_event.path.includes(refPopup.current) &&
+      refUpdateButtonClose.current &&
+      !_event.path.includes(refUpdateButtonClose.current)
+    ) {
+      setVisibleInput(false);
+      setInputValue(text);
     }
   };
   React.useEffect(() => {
@@ -238,9 +251,15 @@ export const Answer: React.FC<CommentProps> = ({
                   ref={refUpdateTextarea}
                   value={inputValue}
                   onChange={(e: any) => setInputValue(e.target.value)}
+                  maxLength={350}
                   rows={1}
                 ></textarea>
-                {inputValue && (
+                {inputValue.length === 350 && (
+                  <p className="mark">
+                    Максимальная размер сообщения 350 символов
+                  </p>
+                )}
+                {inputValue.length > 0 && (
                   <svg
                     onClick={onUpdate}
                     className={isLoading ? "disabled" : ""}
@@ -254,7 +273,9 @@ export const Answer: React.FC<CommentProps> = ({
             )}
             <div className="comment__footer">
               {visibleInput && (
-                <button onClick={closeUpdateInput}>Закрыть</button>
+                <button ref={refUpdateButtonClose} onClick={closeUpdateInput}>
+                  Закрыть
+                </button>
               )}
               {!visibleInput && messageMore && (
                 <button
@@ -281,9 +302,11 @@ export const Answer: React.FC<CommentProps> = ({
                   placeholder="Введите комментарий:"
                   rows={1}
                 ></textarea>
-                <svg onClick={() => onSubmit(user.id)} width="20" height="20">
-                  <use xlinkHref="../../static/img/icons/icons.svg#submit" />
-                </svg>
+                {answerInputValue.length > 0 && (
+                  <svg onClick={() => onSubmit(user.id)} width="20" height="20">
+                    <use xlinkHref="../../static/img/icons/icons.svg#submit" />
+                  </svg>
+                )}
               </div>
             )}
           </div>
